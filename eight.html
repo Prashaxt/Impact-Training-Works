@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eight</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Stalinist+One&display=swap" rel="stylesheet">
+
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        background-color: lavenderblush;
+        height: 100vh;
+        width: 100vw;
+        font-family: "Sour Gummy";
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container{
+        height: 50vh;
+        width: 60vw;
+        background-color: pink;
+        border: 2px solid darkmagenta;
+        border-radius: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .left{
+        height: 100%;
+        width: 50%;
+        border-right: 1px solid seashell;
+
+        display: flex;
+        flex-direction: column;
+        
+        align-items: center;
+    }
+    h1{
+        height: 50%;
+        width: 100%;
+        font-size: 4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .details{
+        height: 20%;
+        width: 100%;
+        font-size: 1.5rem;
+        display: flex;
+        justify-content: space-evenly;
+       
+    }
+    .leftBottom{
+        height: 30%;
+        width: 80%;
+    }
+    label{
+        font-size: 1.1rem;
+    }
+    .input{
+        border: none;
+        border-radius: 0.3rem;
+        height: 50%;
+        padding: 5px;
+        font-size: 0.8rem;
+        width: 80%;
+    }
+    .search{
+        height: 50%;
+    }
+    .submitButton{
+        height: 50%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    button{
+        background-color: lightseagreen;
+        color: white;
+        border: none;
+        border-radius: 0.4rem;
+        height: 60%;
+        width: 50%;
+        font-size: 1.4rem;
+    }
+    .right{
+        height: 100%;
+        width: 50%;
+    }
+    .temp{
+        height: 50%;
+        width: 100%;
+
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .tempdeg{
+        font-size: 4rem;
+    }
+    .con{
+        height: 50%;
+        width: 100%;
+    }
+    img{
+        height: 70%;
+        width: 100%;
+    }
+    .condition{
+        height: 30%;
+        text-align: center;
+        font-size: 2.5rem;
+        padding: auto;
+
+    }
+
+
+</style>
+<body>
+    <div class="container">
+        <div class="left">
+            <h1 id="city">City</h1>
+            <div class="details">
+                <span class="state">State</span>
+                <span class="country">country</span>
+            </div>
+            <div class="leftBottom">
+                <div class="search">
+                    <label for="input">City: </label>
+                    <input type="text" class="input" id="input" placeholder="Enter your city name">
+                </div>
+                <div class="submitButton"><button type="submit">Submit</button></div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="temp">
+                <div><div class="tempdeg celcius"><center>0</center></div><center>Celcius</center></div>
+                <div><div class="tempdeg farenheit"><center>0</center></div><center>Farenheits</center></div>
+            </div>
+            <div class="con">
+                <div class="condition">weather</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+
+        const city=document.querySelector("#city")
+        const state=document.querySelector(".state")
+        const country=document.querySelector(".country")
+
+        let inputCity=document.querySelector("input")
+        let submitButton=document.querySelector(".submitButton")
+
+        let tempCelcius=document.querySelector(".celcius")
+        let tempFaren=document.querySelector(".farenheit")
+
+        
+        let condition=document.querySelector(".condition")
+
+        let url="https://api.weatherapi.com/v1/current.json?key=e884e49500a94e69811163154241309&q=Vadodara"
+
+
+        submitButton.addEventListener("click", ()=>{
+            newUrl=`https://api.weatherapi.com/v1/current.json?key=e884e49500a94e69811163154241309&q=${inputCity.value}`
+            inputCity.innerText="";
+            
+            fecthing(newUrl)
+        })
+
+        function fecthing(newUrl){
+
+            fetch(newUrl)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data.location.name)
+                city.innerText=data.location.name
+                state.innerText=data.location.region
+                country.innerText=data.location.country
+
+                tempCelcius.innerText = data.current.temp_c
+                tempFaren.innerText = data.current.temp_f
+
+                condition.innerHTML= data.current.condition.text
+            })
+        }
+        fecthing(url)
+
+    </script>
+</body>
+</html>
